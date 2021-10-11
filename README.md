@@ -1,3 +1,7 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Fridasaralinnea/Labmanagement-backend/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/Fridasaralinnea/Labmanagement-backend/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/Fridasaralinnea/Labmanagement-backend/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/Fridasaralinnea/Labmanagement-backend/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/Fridasaralinnea/Labmanagement-backend/badges/build.png?b=main)](https://scrutinizer-ci.com/g/Fridasaralinnea/Labmanagement-backend/build-status/main)
+
 
 **npm init
 
