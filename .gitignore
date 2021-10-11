@@ -1,0 +1,14 @@
+node_modules/
+*.sqlite
+
+# Test coverage directory
+coverage
+
+# nyc test coverage
+.nyc_output/
+
+# config
+/config
+
+#env
+/.env
