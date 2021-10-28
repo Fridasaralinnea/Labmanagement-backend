@@ -8,12 +8,38 @@ const querystring = require('querystring');
 // const jwt = require('jsonwebtoken');
 // const secret = process.env.JWT_SECRET;
 
-/* GET Kmom01. */
+/* GET */
 router.get("/", (req, res) => {
+    console.log("GETTING BOOKINGS!");
+    let user_email = req.query.email;
+    var sql = `SELECT * FROM rented WHERE user_email=?`;
+
+    console.log("Email: ", user_email);
+
+    db.all(sql,
+        user_email,
+        (err, rows) => {
+        if (err) {
+            return res.status(500).json({
+                errors: {
+                    status: 500,
+                    source: "/reports/edit",
+                    title: "Database error",
+                    detail: err.message
+                }
+            });
+        }
+        console.log(rows);
+        res.json({ data: rows });
+    })
+});
+
+
+router.get("/equipment", (req, res) => {
     let id = req.query.id;
     var sql = `SELECT * FROM equipment WHERE id=?`;
 
-    console.log("ID: ", id);
+    console.log(id);
 
     db.get(sql, id, (err, rows) => {
         if (err) {
@@ -26,63 +52,23 @@ router.get("/", (req, res) => {
                 }
             });
         }
-        res.json({ data: rows });
-    })
-});
-
-/* GET Kmom01. */
-router.get("/history", (req, res) => {
-    let id = req.query.id;
-    var sql = `SELECT * FROM history WHERE equipment_id=?`;
-    // var sql = `SELECT * FROM history`;
-
-    console.log("ID: ", id);
-
-    db.all(sql, id, (err, rows) => {
-        if (err) {
-            return res.status(500).json({
-                errors: {
-                    status: 500,
-                    source: "/reports/edit",
-                    title: "Database error",
-                    detail: err.message
-                }
-            });
-        }
-        console.log(rows);
         res.json(rows);
     })
 });
 
 
-router.post("/", (req, res) => {
-    console.log("history add");
+router.post("/pickup", (req, res) => {
+    console.log("Pick up equipment");
     // console.log(res.req.body);
     var id = res.req.body.id;
-    var user = res.req.body.user;
-    var amount = res.req.body.amount;
-    var action = res.req.body.action;
-    let date_ob = new Date();
-    let date = ("0" + date_ob.getDate()).slice(-2);
-    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-    let year = date_ob.getFullYear();
-    let hours = date_ob.getHours();
-    let minutes = date_ob.getMinutes();
-    let seconds = date_ob.getSeconds();
-    let event_date = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+    var status = res.req.body.status;
     console.log("ID: ", id);
-    console.log("User: ", user);
-    console.log("Date: ", event_date);
-    console.log("Action: ", action);
-    console.log("Amount: ", amount);
-    var sql = `INSERT INTO history (event_date, equipment_id, action, amount, user_email) VALUES (?, ?, ?, ?, ?)`;
+    console.log("Status: ", status);
+    var sql = `UPDATE rented SET status=? WHERE id=?`;
 
     db.run(sql,
-        event_date,
-        id,
-        action,
-        amount,
-        user, (err) => {
+        status,
+        id, (err) => {
             if (err) {
                 return res.status(500).json({
                     errors: {
@@ -95,7 +81,35 @@ router.post("/", (req, res) => {
             }
             return res.status(201).json({
                 data: {
-                    message: "History succesfully added."
+                    message: "Equipment succesfully picked up."
+                }
+            });
+        }
+    );
+});
+
+
+router.post("/return", (req, res) => {
+    console.log("Return equipment");
+    var id = res.req.body.id;
+    console.log("ID: ", id);
+    var sql = `DELETE FROM rented WHERE id=?`;
+
+    db.all(sql,
+        id, (err) => {
+            if (err) {
+                return res.status(500).json({
+                    errors: {
+                        status: 500,
+                        source: "/reports/edit",
+                        title: "Database error",
+                        detail: err.message
+                    }
+                });
+            }
+            return res.status(201).json({
+                data: {
+                    message: "Equipment succesfully returned."
                 }
             });
         }

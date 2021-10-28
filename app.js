@@ -16,6 +16,9 @@ const add = require('./routes/add');
 const del2 = require('./routes/del2');
 const history = require('./routes/history');
 const users = require('./routes/users');
+const book = require('./routes/book');
+const mybookings = require('./routes/mybookings');
+
 
 const app = express();
 const port = 8833;
@@ -63,6 +66,8 @@ app.use('/add', add);
 app.use('/edit', edit);
 app.use('/history', history);
 app.use('/users', users);
+app.use('/book', book);
+app.use('/mybookings', mybookings);
 
 
 

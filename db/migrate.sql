@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS rented (
     id INTEGER PRIMARY KEY,
     equipment_id VARCHAR(60) NOT NULL,
+    equipment_name VARCHAR(60) NOT NULL,
     user_email VARCHAR(255) NOT NULL,
-    amount INTEGER NOT NULL,
     rent_date VARCHAR(255) NOT NULL,
     status VARCHAR(255) NOT NULL,
     UNIQUE(id)

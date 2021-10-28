@@ -8,12 +8,45 @@ const querystring = require('querystring');
 // const jwt = require('jsonwebtoken');
 // const secret = process.env.JWT_SECRET;
 
-/* GET Kmom01. */
+/* GET */
 router.get("/", (req, res) => {
+    console.log("GETTING BOOKINGS!");
+    let equipment_id = req.query.id;
+    let user_email = req.query.email;
+    let rent_date = req.query.rent_date;
+    var sql = `SELECT * FROM rented WHERE equipment_id=? AND user_email=? AND rent_date=?`;
+    // var sql = `SELECT * FROM rented WHERE equipment_id=? AND user_email=?`;
+
+    console.log("ID: ", equipment_id);
+    console.log("Email: ", user_email);
+    console.log("Rent date: ", rent_date);
+
+    db.all(sql,
+        equipment_id,
+        user_email,
+        rent_date,
+        (err, rows) => {
+        if (err) {
+            return res.status(500).json({
+                errors: {
+                    status: 500,
+                    source: "/reports/edit",
+                    title: "Database error",
+                    detail: err.message
+                }
+            });
+        }
+        console.log(rows);
+        res.json({ data: rows });
+    })
+});
+
+
+router.get("/equipment", (req, res) => {
     let id = req.query.id;
     var sql = `SELECT * FROM equipment WHERE id=?`;
 
-    console.log("ID: ", id);
+    console.log(id);
 
     db.get(sql, id, (err, rows) => {
         if (err) {
@@ -26,63 +59,32 @@ router.get("/", (req, res) => {
                 }
             });
         }
-        res.json({ data: rows });
-    })
-});
-
-/* GET Kmom01. */
-router.get("/history", (req, res) => {
-    let id = req.query.id;
-    var sql = `SELECT * FROM history WHERE equipment_id=?`;
-    // var sql = `SELECT * FROM history`;
-
-    console.log("ID: ", id);
-
-    db.all(sql, id, (err, rows) => {
-        if (err) {
-            return res.status(500).json({
-                errors: {
-                    status: 500,
-                    source: "/reports/edit",
-                    title: "Database error",
-                    detail: err.message
-                }
-            });
-        }
-        console.log(rows);
         res.json(rows);
     })
 });
 
 
 router.post("/", (req, res) => {
-    console.log("history add");
+    console.log("Booking");
     // console.log(res.req.body);
-    var id = res.req.body.id;
-    var user = res.req.body.user;
-    var amount = res.req.body.amount;
-    var action = res.req.body.action;
-    let date_ob = new Date();
-    let date = ("0" + date_ob.getDate()).slice(-2);
-    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-    let year = date_ob.getFullYear();
-    let hours = date_ob.getHours();
-    let minutes = date_ob.getMinutes();
-    let seconds = date_ob.getSeconds();
-    let event_date = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
-    console.log("ID: ", id);
-    console.log("User: ", user);
-    console.log("Date: ", event_date);
-    console.log("Action: ", action);
-    console.log("Amount: ", amount);
-    var sql = `INSERT INTO history (event_date, equipment_id, action, amount, user_email) VALUES (?, ?, ?, ?, ?)`;
+    var equipment_id = res.req.body.id;
+    var equipment_name = res.req.body.equipment;
+    var user_email = res.req.body.user;
+    var status = res.req.body.status;
+    var rent_date = res.req.body.rent_date;
+    console.log("ID: ", equipment_id);
+    console.log("Equipment: ", equipment_name);
+    console.log("User: ", user_email);
+    console.log("Status: ", status);
+    console.log("Date: ", rent_date);
+    var sql = `INSERT INTO rented (equipment_id, equipment_name, user_email, rent_date, status) VALUES (?, ?, ?, ?, ?)`;
 
     db.run(sql,
-        event_date,
-        id,
-        action,
-        amount,
-        user, (err) => {
+        equipment_id,
+        equipment_name,
+        user_email,
+        rent_date,
+        status, (err) => {
             if (err) {
                 return res.status(500).json({
                     errors: {
@@ -95,7 +97,7 @@ router.post("/", (req, res) => {
             }
             return res.status(201).json({
                 data: {
-                    message: "History succesfully added."
+                    message: "Booking succesfully added."
                 }
             });
         }
