@@ -21,7 +21,12 @@ npm install jsonwebtoken --save
 
 Routes:
 / - index
-/reports - reports
-/reports/edit - edit
 /register - register
 /login - login
+/admin - admin
+/add - add
+/edit - edit
+/del - del2
+/users - users
+/book - book
+/mybookings - mybookings
