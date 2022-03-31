@@ -1,12 +1,8 @@
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
-// const sqlite3 = require('sqlite3').verbose();
 const db = require("../db/database.js");
 const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const secret = process.env.JWT_SECRET;
-// const saltRounds = 10;
 
 /* POST to register new user. */
 router.post(
@@ -18,9 +14,6 @@ router.post(
     var password = req.body.password;
     var role = "student";
     const saltRounds = 10;
-
-    // console.log(email);
-    // console.log(password);
 
     if (!email) {
         return res.status(400).json({

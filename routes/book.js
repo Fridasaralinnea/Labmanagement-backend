@@ -1,12 +1,9 @@
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
-// const sqlite3 = require('sqlite3').verbose();
 const db = require("../db/database.js");
 const url = require('url');
 const querystring = require('querystring');
-// const jwt = require('jsonwebtoken');
-// const secret = process.env.JWT_SECRET;
 
 /* GET */
 router.get("/", (req, res) => {
@@ -15,7 +12,6 @@ router.get("/", (req, res) => {
     let user_email = req.query.email;
     let rent_date = req.query.rent_date;
     var sql = `SELECT * FROM rented WHERE equipment_id=? AND user_email=? AND rent_date=?`;
-    // var sql = `SELECT * FROM rented WHERE equipment_id=? AND user_email=?`;
 
     console.log("ID: ", equipment_id);
     console.log("Email: ", user_email);

@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-// const sqlite3 = require('sqlite3').verbose();
 const db = require("../db/database.js");
-// const { body } = require('express-validator');
-// const jwt = require('jsonwebtoken');
-// const secret = process.env.JWT_SECRET;
 
-/* GET equipment. */
 router.get("/", (req, res) => {
     var sql = `SELECT * FROM equipment`;
 

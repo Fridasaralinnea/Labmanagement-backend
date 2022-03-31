@@ -10,22 +10,18 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config.js');
 const jwtSecret = config.jwtSecret;
 
-
 /* POST login user. */
 router.post(
     "/",
     body('email').isEmail(),
     (req, res) => {
     console.log("Login route reached for enpoint '/' using POST method with email: ", req.body.email, " and password: ", req.body.password);
-    // const jwt = require('jsonwebtoken');
+
     var email = req.body.email;
     var pwd = req.body.password;
     var sql = `SELECT * FROM users WHERE email = ?`;
 
     db.get(sql, email, (err, row) => {
-        // console.log("SQL get");
-        // console.log(err);
-        // console.log(row);
         if (err || !row) {
             console.log("Email invalid");
              return res.status(400).json({
@@ -41,10 +37,6 @@ router.post(
         console.log("hash: ", row.password);
 
         bcrypt.compare(pwd, row.password, (err, valid) => {
-            // console.log(pwd);
-            // console.log(row.password);
-            // console.log(row.email);
-            // console.log(valid);
             if (valid) {
                 const payload = {
                     email: row.email,

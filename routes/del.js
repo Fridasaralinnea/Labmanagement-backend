@@ -1,52 +1,33 @@
 const express = require('express');
-const { body } = require('express-validator');
 const router = express.Router();
-// const sqlite3 = require('sqlite3').verbose();
 const db = require("../db/database.js");
-const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const secret = process.env.JWT_SECRET;
-// const saltRounds = 10;
+const { body } = require('express-validator');
 
-/* POST to register new user. */
 router.post("/", (req, res) => {
-    console.log("DELETE!!");
-    console.log(req);
-
+    console.log("DELETE!");
     var id = req.body.id;
     var sql = `DELETE FROM equipment WHERE id=?`;
 
-    console.log("Delete ",  id);
-
-    if (!id) {
-        return res.status(400).json({
-            errors: {
-                status: 400,
-                title: "Bad Request",
-                detail: "ID missing in request"
-            }
-        });
-    }
-
-    db.all(sql, id, (err) => {
+    db.run(`DELETE FROM equipment WHERE id=?`,
+        id, (err) => {
         if (err) {
-            console.log("db error");
             return res.status(500).json({
                 errors: {
                     status: 500,
-                    source: "/register",
+                    source: "/admin",
                     title: "Database error",
                     detail: err.message
                 }
             });
         }
+        console.log("Deleted equipment");
         return res.status(201).json({
             data: {
-                msg: "Equipment succesfully deleted"
+                msg: "Deleted equipment"
             }
-        });
-    });
-})
+        })
+    })
+});
 
 
 module.exports = router;

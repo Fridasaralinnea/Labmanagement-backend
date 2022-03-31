@@ -1,12 +1,9 @@
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
-// const sqlite3 = require('sqlite3').verbose();
 const db = require("../db/database.js");
 const url = require('url');
 const querystring = require('querystring');
-// const jwt = require('jsonwebtoken');
-// const secret = process.env.JWT_SECRET;
 
 /* GET */
 router.get("/", (req, res) => {
@@ -59,7 +56,6 @@ router.get("/equipment", (req, res) => {
 
 router.post("/pickup", (req, res) => {
     console.log("Pick up equipment");
-    // console.log(res.req.body);
     var id = res.req.body.id;
     var status = res.req.body.status;
     console.log("ID: ", id);
